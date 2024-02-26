@@ -1,0 +1,30 @@
+﻿@using static BoardGameBrawl.Areas.Identity.Pages.Mailbox.SendMessageModel
+@using BoardGameBrawl.Data.Models.DTO
+@{
+}
+
+<div class="row">
+    <div class="d-flex flex-column bd-highlight justify-content-center align-items-center text-center">
+        @foreach (BasicUserInfoDTO friend in Model.FriendsList)
+        {
+            <div class="container"> 
+                <div class="col-3">
+                    @if (friend.DTOUserAvatar != null)
+                    {
+                        <img src="data:image/*;base64,@(Convert.ToBase64String(friend.DTOUserAvatar))" class="img-thumbnail img-round" alt="" width="100" height="100">
+                    }
+                    else
+                    {
+                        <img src="~/img/user.png" class="card-img-top" alt="" width="100" height="100">
+                    }
+                </div>
+                <div class="col-9">
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<style>
+
+</style>

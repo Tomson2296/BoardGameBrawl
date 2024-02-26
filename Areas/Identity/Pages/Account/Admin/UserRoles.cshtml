@@ -1,0 +1,64 @@
+﻿@page
+@using BoardGameBrawl.Data.Models
+@using Microsoft.AspNetCore.Identity
+@model UserRolesModel
+@{
+    ViewData["Title"] = "Manage user's roles in application";
+    ViewData["ActivePage"] = AdminWorkflowsPages.UserRoles;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <div asp-validation-summary="All" class="text-danger m-2"></div>
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="3" class="text-center">List of application roles</th></tr></thead>
+                <tbody>
+                    @foreach (IdentityRole role in Model._roleManager.Roles)
+                    {
+                        int userCount =
+                        (await Model._userManager.GetUsersInRoleAsync(role.Name!)).Count;
+                        <tr>
+                            <td><strong> @role.Name </strong></td>
+                            <td>
+                                @userCount users in role
+                            </td>
+                            @if (userCount != 0)
+                            {
+                            <td>
+                                    <a asp-page="UsersInRole" asp-route-ChosenRole="@role.Name" asp-route-PageNumber="1" class="btn btn-primary btn-block w-50">Show users in role</a>
+                            </td>
+                            }
+                            else
+                            {
+                            <td>
+                                <form method="post" asp-page-handler="DeleteFromList">
+                                    <input type="hidden" name="role" value="@role.Name" />
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                            }
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="2">
+                            <form method="post" asp-page-handler="AddToList" id="addToListForm">
+                                <input class="form-control" name="role"/>
+                            </form>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success btn-block w-50"
+                                    form="addToListForm">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

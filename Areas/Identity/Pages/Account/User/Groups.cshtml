@@ -1,0 +1,49 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.DTO
+@model BoardGameBrawl.Areas.Identity.Pages.Account.User.GroupsModel
+@{
+    ViewData["Title"] = "Check list of your groups";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    
+    @if(Model.Groups.Count() == 0)
+    {
+        <div class="row text-center justify-content-center">
+            <h3> You dont belong to any group? Create one and start your community :) </h3>
+            <a asp-page="CreateGroup" class="btn btn-primary"> Create new group </a>
+        </div>
+    }
+    else
+    {
+        @foreach (GroupInfoDTO groupInfo in Model.Groups)
+        {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2 text-center">
+                <a asp-page="/Group/Index" asp-route-GroupName="@groupInfo.GroupName" class="customNavLink">
+                    <div class="card">
+                        @if (groupInfo.GroupMiniature != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(groupInfo.GroupMiniature!))" class="card-img-top" alt="" width="175" height="200" />
+                        }
+                        else
+                        {
+                            <img src="~/img/group.png" class="card-img-top" alt="" width="175" height="200">
+                        }
+                        <div class="card-body">
+                            <h6 class="card-title"> @groupInfo.GroupName </h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>

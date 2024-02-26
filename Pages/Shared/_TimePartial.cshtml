@@ -1,0 +1,27 @@
+﻿@using BoardGameBrawl.Data.Models.Entities
+@using BoardGameBrawl.Services
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@inject IDateService DateService
+@inject BoardGameBrawl.Data.Stores.Interfaces.IUserScheduleStore<UserSchedule, ApplicationUser> UserScheduleService
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div>
+            <h6> @await DateService.GetTimeAsync(DateTime.Now) </h6>
+        </div>
+        <div>
+            @if (await DateService.CheckUserScheduleAvailibilityAsync(DateTime.Now, await UserScheduleService.FindScheduleByUserAsync(await UserManager.FindByNameAsync(User.Identity!.Name!), CancellationToken.None)))
+            {
+                <h6> You are available for play  </h6>
+            }
+            else
+            {
+                <h6> You are not available for play right now  </h6>
+            }
+        </div>
+    </div>
+}

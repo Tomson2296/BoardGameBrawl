@@ -1,0 +1,161 @@
+﻿@page
+@model FinderModel
+@using BoardGameBrawl.Data.Models.Entities
+@using BoardGameBrawl.Data.Models.DTO
+@{
+    ViewData["Title"] = "Find boardgames. other users and tournaments";
+}
+
+<div class="row mb-3 d-flex justify-content-center">
+    <div class="col-sm-12 col-md-8">
+        <form id="findForm" method="post" name="findForm">
+            <div class="input-group">
+                <span class="find-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </span>
+                <input asp-for="Filter" class="form-control find-input" placeholder="" />
+                <select asp-for="Category" name="Category" class="selectpicker find-select" id="Category">
+                    <option value="Boardgame"> Boardgame </option>
+                    <option value="User"> User </option>
+                    <option value="Group"> Group </option>
+                </select>
+                <div>
+                    <button id="find-submit" type="submit" class="btn btn-secondary find-button">Find</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+    @if (Model.Category == "User")
+    {
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-wrap text-center">
+        @foreach (BasicUserInfoDTO viewUser in Model.Users)
+        {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                <a asp-page="/AppUser/Index" asp-route-UserName="@viewUser.DTOUsername">
+                    <div class="card">
+                        @if (viewUser.DTOUserAvatar != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(viewUser.DTOUserAvatar))" class="card-img-top img-round" alt="" width="200" height="200">
+                        }
+                        else
+                        {
+                            <img src="~/img/user.png" class="card-img-top img-round" alt="" width="200" height="200">
+                        }
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate"> @viewUser.DTOUsername </h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        </div>
+    </div>
+    }
+    
+    @if(Model.Category == "Boardgame")
+    {
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-wrap text-center">
+        @foreach (BoardgameDTO boardgame in Model.Boardgames)
+        {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                    <a asp-area="Identity" asp-page="/Boardgame/Index" asp-route-BoardgameID="@boardgame.BGGId">
+                        <div class="card">
+                            @if (boardgame.BoardgamePic!.StartsWith("http"))
+                            {
+                                <img src="@boardgame.BoardgamePic" class="card-img-top img-fit" alt="" width="200" height="200">
+                            }
+                            else
+                            {
+                                <img src="~/img/@boardgame.BoardgamePic" class="card-img-top img-fit" alt="" width="200" height="200">
+                            }
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate"> @boardgame.Name </h6>
+                                <h6 class="card-text"><small class="text-muted">@boardgame.YearPublished</small></h6>
+                            </div>
+                        </div>
+                    </a>
+            </div>
+        }
+        </div>
+    </div>
+    }
+
+    @if (Model.Category == "Group")
+    {
+    <div class="container-fluid">
+        <div class="d-flex flex-row flex-wrap text-center">
+            @foreach (GroupInfoDTO groupInfo in Model.Groups)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                    <a asp-page="/Group/Index" asp-route-GroupName="@groupInfo.GroupName">
+                        <div class="card">
+                            @if (groupInfo.GroupMiniature != null)
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(groupInfo.GroupMiniature!))" class="card-img-top" alt="" width="200" height="200">
+                            }
+                            else
+                            {
+                                <img src="~/img/group.png" class="card-img-top" alt="" width="200" height="200">
+                            }
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate"> @groupInfo.GroupName </h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+    }
+</div>
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+    .img-round {
+        border-radius: 50%;
+    }
+
+    .img-fit {
+        object-fit: contain;
+    }
+  
+    .find-icon { 
+        margin-right: 20px;
+    }
+
+    .find-button { 
+       border-top-left-radius: 0;
+       border-bottom-left-radius: 0;
+    }
+  
+    .find-input {
+        border-color: #6c757d;
+    }
+  
+    .find-select{ 
+        padding: 0 8px;
+    }
+  
+    .card {
+        padding: 15px;
+        border: 0;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+
+    }
+    .card img {
+       transition: transform 0.2s;
+    }
+  
+    .card:hover img {
+        transform: scale(1.1);
+    }
+</style>

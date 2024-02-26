@@ -1,0 +1,53 @@
+﻿@using BoardGameBrawl.Data.Models.DTO
+@using BoardGameBrawl.Data.Models.Entities
+@model IEnumerable<MatchmakingRuleDTO> 
+@{
+}
+
+<div class="container-fluid">
+    <div class="text-center p-3 mb-3">
+        <h5>Boardgame Rules</h5>
+    </div>
+
+    @if(!Model.Any())
+    {
+        <div class="text-center p-3 mb-3">
+            <h5> There is no boardgame rules at the moment </h5>
+        </div>
+    }
+    else
+    {
+        <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+            <thead>
+                <tr>
+                    <td><strong>Type</strong></td>
+                    <td colspan="2"><strong>Description</strong></td>
+                    <td><strong>Decider</strong></td>
+                    <td>Delete rule</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (MatchmakingRuleDTO rule in Model)
+                {
+                    <tr>
+                        <td>@rule.RuleType.ToString()</td>
+                        <td colspan="2">@rule.RuleDesc!.ToString()</td>
+                        @if (rule.RuleDecider == true)
+                        {
+                            <td> <img src="~/img/star.png" alt="star" height="32" width="32" /> </td>
+                        }
+                        else
+                        {
+                            <td> </td>
+                        }
+                        <form action="post">
+                            <td>
+                                <a asp-page="RemoveMatchmakingRule" asp-route-ruleId="@rule.RuleId" type="submit" class="btn btn-danger w-100"> Delete </a>
+                            </td>
+                        </form>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

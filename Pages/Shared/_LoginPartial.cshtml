@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BoardGameBrawl.Data.Models.Entities
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        @if (User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Notification/Index" title="Notification">
+                    <img src="~/img/notificationWhite.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Admin/Index" title="Admin">
+                    <img src="~/img/admin-tools.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dsrk">Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Notification/Index" title="Notification">
+                    <img src="~/img/notificationWhite.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/MailBox/Index" title="Mailbox">
+                    <img src="~/img/mailboxWhite.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Schedule/Index" title="Schedule">
+                    <img src="~/img/schedule.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Geolocation/Index" title="Geolocation">
+                    <img src="~/img/globe.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Match/Index" title="Match">
+                    <img src="~/img/chess.png" width="24" heigth="24" alt="" />
+                </a>
+            </li>
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @User.Identity?.Name
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Index" title="Profile">Profile Info</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/BGGCollection" title="Collection">BGG Collection</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/BoardgameFavourites" title="Favourites">Favourite BG</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Moderator" title="Moderator">Moderator List</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Friends" title="Friends">Friends List</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Groups" title="Groups">Group List</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Manage/Index" title="Manage">Manage Account</a>
+                        </li>
+                        <li>
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dsrk">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        }
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>

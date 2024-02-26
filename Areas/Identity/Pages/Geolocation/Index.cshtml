@@ -1,0 +1,91 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.Entities
+@inject BoardGameBrawl.Data.Stores.Interfaces.IUserGeolocationStore<UserGeolocation, ApplicationUser> UserGeolocationService
+@model BoardGameBrawl.Areas.Identity.Pages.Geolocation.IndexModel
+@{
+    ViewData["Title"] = "Enter Geolocation Data";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="set-geolocation-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Street" class="form-control" placeholder="Please enter your city" />
+                <label asp-for="Input.Street" class="form-label"></label>
+                <span asp-validation-for="Input.Street" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" placeholder="Please enter your city" />
+                <label asp-for="Input.City" class="form-label"></label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                @if (await UserGeolocationService.CheckIfUserEverProvidedDataAsync(Model.ApplicationUser))
+                {
+                    <button id="geolocation-data-submit" type="submit" class="w-75 btn btn-lg btn-secondary">Update data</button>
+                }
+                else
+                {
+                    <button id="geolocation-data-submit" type="submit" class="w-75 btn btn-lg btn-secondary">Save data</button>
+                }
+            </div>
+        </form>
+        @if (await UserGeolocationService.CheckIfUserEverProvidedDataAsync(Model.ApplicationUser))
+        {
+            <form asp-page-handler="Clear" method="post">
+                <div class="form-floating mb-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <button id="geolocation-clear-data-submit" type="submit" class="w-75 btn btn-lg btn-danger">Clear data</button>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex flex-column align-items-center justify-content-center p-3">
+            @if (Model.UserGeolocation != null)
+            {
+                <h4> Your specified location: </h4>
+                <h5> Latitude: @Model.UserGeolocation.Latitude </h5>
+                <h5> Longitude: @Model.UserGeolocation.Longitude </h5>
+            }
+            else
+            {
+
+            }
+        </div>
+    </div>
+</div>
+<div class="row p-4">
+    <div class="d-flex align-items-center justify-content-center">
+        @if (await UserGeolocationService.CheckIfUserEverProvidedDataAsync(Model.ApplicationUser))
+        {
+            if (await UserGeolocationService.CheckIfUserHaveImageDataAsync(Model.ApplicationUser))
+            {
+                <div id="map">
+                    <img src="data:image/*;base64,@(Convert.ToBase64String(Model.UserGeolocation!.GeolocationImage!))" alt="GoogleStaticMap"
+                         width="600" height="300" />
+                </div>
+            }
+            else
+            {
+                <div id="map">
+                    <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ImageData!))" alt="GoogleStaticMap"
+                         width="600" height="300" />
+                </div>
+            }
+        }
+        else
+        {
+            <h4> No specified location to show </h4>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

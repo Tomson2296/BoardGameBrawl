@@ -1,0 +1,229 @@
+﻿@page "{UserName}"
+@using BoardGameBrawl.Data.Models.Entities
+@inject BoardGameBrawl.Data.Stores.Interfaces.IUserScheduleStore<UserSchedule,ApplicationUser> UserScheduleService
+@model BoardGameBrawl.Areas.Identity.Pages.AppUser.UserScheduleModel
+@{
+    ViewData["Title"] = "Check User's gaming schedule";
+    int Element = 0;
+    int DivElementsPerDay = 0;
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <h3> @ViewData["Title"] </h3>
+    </div>
+    <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>#</h6></div>
+            <div class="schedule-nav"><h6>0:00 - 2:00</h6></div>
+            <div class="schedule-nav"><h6>2:00 - 4:00</h6></div>
+            <div class="schedule-nav"><h6>4:00 - 6:00</h6></div>
+            <div class="schedule-nav"><h6>6:00 - 8:00</h6></div>
+            <div class="schedule-nav"><h6>8:00 - 10:00</h6></div>
+            <div class="schedule-nav"><h6>10:00 - 12:00</h6></div>
+            <div class="schedule-nav"><h6>12:00 - 14:00</h6></div>
+            <div class="schedule-nav"><h6>14:00 - 16:00</h6></div>
+            <div class="schedule-nav"><h6>16:00 - 18:00</h6></div>
+            <div class="schedule-nav"><h6>18:00 - 20:00</h6></div>
+            <div class="schedule-nav"><h6>20:00 - 22:00</h6></div>
+            <div class="schedule-nav"><h6>22:00 - 24:00</h6></div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Monday</h6></div>
+            <div class="schedule-content" id="MondayDiv">
+                @if (Model.UserSchedule.Monday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Monday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Tuesday</h6></div>
+            <div class="schedule-content" id="TuesdayDiv">
+                @if (Model.UserSchedule.Tuesday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Tuesday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Wednesday</h6></div>
+            <div class="schedule-content" id="WednesdayDiv">
+                @if (Model.UserSchedule.Wednesday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Wednesday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Thursday</h6></div>
+            <div class="schedule-content" id="ThursdayDiv">
+                @if (Model.UserSchedule.Thursday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Thursday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Friday</h6></div>
+            <div class="schedule-content" id="FridayDiv">
+                @if (Model.UserSchedule.Friday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Friday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Saturday</h6></div>
+            <div class="schedule-content" id="SaturdayDiv">
+                @if (Model.UserSchedule.Saturday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Saturday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-fill align-items-center align-content-center justify-content-center text-muted">
+            <div class="schedule-nav"><h6>Sunday</h6></div>
+            <div class="schedule-content" id="SundayDiv">
+                @if (Model.UserSchedule.Sunday!.Any())
+                {
+                    DivElementsPerDay = Model.NoOfDivsPerDayCreated[DayOfWeek.Sunday];
+                    for (int i = 0; i < DivElementsPerDay; i++)
+                    {
+                        <div class="schedule-element" style="top: @Model.DivPositions[Element]px; height: @Model.DivHeights[Element]px">
+                            <h6> Available </h6>
+                        </div>
+                        Element++;
+                    }
+                }
+                else
+                {
+                    <div class="schedule-nocontent">
+                    </div>
+                    Element++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .schedule-element{
+        position: absolute;
+        display: flex;
+        font-weight: 500;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: orange;
+        color: black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .schedule-nocontent{
+        display: flex;
+        font-weight: 500;
+        width: 100%;
+        height: 720px;
+        justify-content: center;
+        align-items: center;
+        background-color: darkgray;
+    }
+
+    .schedule-nav{
+        display: flex;
+        font-weight: 500;
+        width: 100%;
+        height: 60px;
+        border: 1px solid black    ;
+        justify-content: center;
+        align-items: center;
+    }
+    .schedule-content{
+        position: relative;
+        display: flex;
+        font-weight: 500;
+        width: 100%;
+        height: 720px;
+        border: 1px solid black;
+        justify-content: center;
+    }
+</style>

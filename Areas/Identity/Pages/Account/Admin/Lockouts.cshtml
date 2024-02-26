@@ -1,0 +1,109 @@
+﻿@page "{PageNumber:int}"
+@using BoardGameBrawl.Data.Models.DTO
+@model LockoutsModel
+
+@{
+    ViewData["Title"] = "List of Users lockuots";
+    ViewData["ActivePage"] = AdminWorkflowsPages.Lockuots;
+}
+
+<h3>Check actual user's lockouts</h3>
+
+<div class="container">
+    <div class="p-3">
+        <table class="table table-sm table-striped table-bordered text-center">
+            <thead>
+                <tr><th class="text-center py-2" colspan="3">Locked Out Users</th></tr>
+            </thead>
+            <tbody>
+                @if (Model.LockedOutUsers.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="3" class="py-2 text-center">
+                            No locked out users
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr><th>Username:</th><th colspan="2">Lockout Remaining:</th></tr>
+                    @foreach (LockoutUserDTO user in Model.LockedOutUsers)
+                    {
+                        TimeSpan timeLeft = await Model.TimeLeft(user);
+                        <tr>
+                            <td>@user.DTOUsername</td>
+                            <td>
+                                @timeLeft.Days days, @timeLeft.Hours hours,
+                                @timeLeft.Minutes min, @timeLeft.Seconds secs
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="unlock">
+                                    <input type="hidden" name="id" value="@user.DTOUserID" />
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        Unlock Now
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-3">
+        <table class="table table-sm table-striped table-bordered text-center">
+            <thead>
+                <tr><th class="text-center py-2" colspan="3">Non-Locked Out Users</th></tr>
+            </thead>
+            <tbody>
+                @if (Model.NonLockedUsers.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="2" class="py-2 text-center">
+                            All users under lockout
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr><th colspan="2">Username: </th></tr>
+                    @foreach (LockoutUserDTO user in Model.NonLockedUsers)
+                    {
+                        <tr>
+                            <td><strong>@user.DTOUsername</strong></td>
+                            <td>
+                                <form method="post" asp-page-handler="lock">
+                                    <input type="hidden" name="id" value="@user.DTOUserID" />
+                                    <button type="submit" class="btn btn-sm btn-danger w-50">
+                                        Lockout user
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @if (Model.PageNumber == 1 && Model.NonLockedUsers.Count() < Model.ListSize)
+        {
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+        }
+        else if (Model.PageNumber == 1 && Model.NonLockedUsers.Count() >= Model.ListSize)
+        {
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.Next_Page"> @Model.Next_Page </a>
+        }
+        else if ((Model.NonLockedUsers.Count() - Model.PageNumber * Model.ListSize) >= Model.ListSize)
+        {
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.Prev_Page"> @Model.Prev_Page </a>
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.Next_Page"> @Model.Next_Page </a>
+        }
+        else
+        {
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.Prev_Page"> @Model.Prev_Page </a>
+            <a asp-page="Lockouts" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+        }
+    </div>
+</div>

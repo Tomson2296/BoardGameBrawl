@@ -1,0 +1,55 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.Entities
+@model BoardGameBrawl.Areas.Identity.Pages.Account.User.BoardgameFavouritesModel
+@{
+    ViewData["Title"] = "Check your favourite boardgames";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <h3> @ViewData["Title"] </h3>
+    </div>
+    @if (Model.BoardgameFavourites.Any())
+    {
+        <div class="row">
+            <div class="d-flex flex-row flex-wrap text-center">
+                @foreach (BoardgameModel boardgame in Model.BoardgameFavourites)
+                {
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                        <a asp-area="Identity" asp-page="/Boardgame/Index" asp-route-BoardgameID="@boardgame.BGGId">
+                            <div class="card">
+                                @if (boardgame.ImageFile!.StartsWith("http"))
+                                {
+                                    <img src="@boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                                }
+                                else
+                                {
+                                    <img src="~/img/@boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                                }
+                                <div class="card-body">
+                                    <h6 class="card-title text-truncate"> @boardgame.Name </h6>
+                                    <h6 class="card-text"><small class="text-muted">@boardgame.YearPublished</small></h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row text-center p-3">
+            <h4> You don't have any favourite boardgames at the moment. </h4>
+        </div>
+    }
+</div>
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .img-fit{
+        object-fit: contain;
+    }
+</style>

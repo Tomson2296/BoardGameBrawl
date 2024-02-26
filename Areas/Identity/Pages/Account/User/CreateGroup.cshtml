@@ -1,0 +1,47 @@
+﻿@page
+@model BoardGameBrawl.Areas.Identity.Pages.Account.User.CreateGroupModel
+@{
+    ViewData["Title"] = "Create new group";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <form id="message" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.GroupName" class="form-control" aria-required="true" placeholder="" />
+                    <label asp-for="Input.GroupName" class="form-label">Group Name</label>
+                    <span asp-validation-for="Input.GroupName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Input.GroupDesc" class="form-control" placeholder=""></textarea>
+                    <label asp-for="Input.GroupDesc" class="form-label">Group Description</label>
+                    <span asp-validation-for="Input.GroupDesc" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    @if (Model.Input.GroupMiniature != null)
+                    {
+                        <img id="groupMiniature" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.GroupMiniature))">
+                    }
+                    else
+                    {
+                        <img id="groupMiniature" class="img-fluid img-thumbnail" src="">
+                    }
+                    <input type="file" asp-for="Input.GroupMiniature" class="form-control" style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px"
+                           onchange="document.getElementById('groupMiniature').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="Input.GroupMiniature" class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="create-group-submit" type="submit" class="w-100 btn btn-lg btn-primary">Create new group</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

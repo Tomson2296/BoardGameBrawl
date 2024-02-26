@@ -1,0 +1,39 @@
+﻿@page "{BoardgameId}"
+@model BoardGameBrawl.Areas.Identity.Pages.Boardgame.RemoveFromFavouriteModel
+@{
+    ViewData["Title"] = "Remove boardgame from favourite";
+}
+
+<div class="row text-center mb-4">
+    <div class="col-4 justify-content-center">
+        @if (Model.Boardgame.ImageFile!.StartsWith("http"))
+        {
+            <img src="@Model.Boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+        }
+        else
+        {
+            <img src="~/img/@Model.Boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+        }
+        <h3> @Model.Boardgame.Name </h3>
+    </div>
+    <div class="col-8 justify-content-center">
+        <div class="row">
+            <div class="text-center mb-3">
+                <h5> Do you want to remove this game from your favourites? </h5>
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+                <form id="removeFromFavourites" method="post">
+                    <button type="submit" class="btn btn-danger"> Remove from Favourites </button>
+                </form>
+            </div>
+            <div class="d-flex justify-content-center">
+                <a asp-page="Index" asp-route-BoardgameId="@Model.Boardgame.BGGId" class="btn btn-primary"> Back to Boardgame Page </a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .img-fit {
+        object-fit: contain;
+    }
+</style>

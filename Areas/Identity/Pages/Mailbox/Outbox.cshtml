@@ -1,0 +1,61 @@
+﻿@page
+@model BoardGameBrawl.Areas.Identity.Pages.Mailbox.OutboxModel
+@{
+    ViewData["Title"] = "Check your Outbox";
+}
+
+<div class="row">
+    <div class="col-sm-3 col-lg-2">
+        <partial name="_MessagesView" />
+    </div>
+    <div class="col-sm-9 col-lg-10">
+        @if (Model.UserMessages_Sender != null)
+        {
+            @for (int i = 0; i < Model.UserMessages_Sender.Count(); i++)
+            {
+                <a asp-page="ViewMessage" asp-route-MessageId="@Model.UserMessages_Sender.ElementAt(i).Id">
+                    <div class="row">
+                        <div class="d-flex p-2 mb-3 flex-row bd-highlight justify-content-between align-items-center message-div-style">
+                            <div class="p-2 bd-highlight">
+                                @if (Model.Receivers_List.ElementAt(i).DTOUserAvatar != null)
+                                {
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Receivers_List.ElementAt(i).DTOUserAvatar!))" class="img-fluid img-thumbnail img-round"
+                                         alt="user_picture" width="50" height="50" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/user.png" class="img-fluid img-thumbnail img-round" alt="" width="50" height="50" />
+                                }
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <strong> @Model.Receivers_List.ElementAt(i).DTOUsername </strong>
+                            </div>
+                            <div class="p-2 bd-highlight text-truncate">
+                                Topic: @Model.UserMessages_Sender.ElementAt(i).MessageTopic
+                            </div>
+                            <div class="ms-auto p-2 bd-highlight">
+                                Date: @Model.UserMessages_Sender.ElementAt(i).MessageSentTime
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+        else
+        {
+            <h3> You have no message in your Outbox. </h3>
+        }
+    </div>
+</div>
+<style>
+    .message-div-style
+    {
+        border: 1px solid black;
+        color: black;
+        border-radius: 10px 10px; 
+    }
+    .img-round
+    {
+        border-radius: 50%;
+    }  
+</style>

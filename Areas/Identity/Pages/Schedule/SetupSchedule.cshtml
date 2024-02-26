@@ -1,0 +1,51 @@
+﻿@page
+@model BoardGameBrawl.Areas.Identity.Pages.Schedule.SetupScheduleModel
+@using BoardGameBrawl.Data.Models.Entities
+@{
+    ViewData["Title"] = "Setup your schedule";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container-fluid">
+    <form id="scheduleAdd" method="post">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-floating mb-3 text-center">
+                <h5> Choose a day / days you wanna fill in your gaming schedule </h5>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="DaysOfWeek" id="DaysOfWeek" class="form-select" asp-items="Html.GetEnumSelectList<DayOfWeek>()" multiple>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-floating mb-3 text-center">
+                    <h5> Choose a specific hours to fill in your gaming schedule </h5>
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="form-floating mb-3">
+                    <h6> Start Time: </h6> <input asp-for="StartTime" type="time" step="1800" name="StartTime" class="timer" />
+                </div>
+                <div class="form-floating mb-3">
+                    <h6> End Time: </h6> <input asp-for="EndTime" type="time" step="1800" name="EndTime" class="timer" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-center">
+                <button id="rule-submit" type="submit" class="w-50 btn btn-lg btn-secondary">Fill in your schedule</button>
+         </div>
+    </div>
+    </form>
+</div>
+<style>
+    #DaysOfWeek{
+        min-height: 200px;    
+    }
+
+    #Hours_and_Minutes{
+        min-height: 200px;
+    }
+</style>

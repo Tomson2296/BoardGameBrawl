@@ -1,0 +1,88 @@
+﻿@page
+@model BoardGameBrawl.Areas.Identity.Pages.Match.AddMatchParticipantsModel
+@{
+    ViewData["Title"] = "Choose match participants";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <form method="post" name="add-matchParticipants-form" id="add-matchParticipants-form" asp-page-handler="SearchUsers">
+                <div class="basic-container p-4 mb-3">
+                    <div class="d-flex flex-column justify-content-center text-center">
+                        <div class="form-floating">
+                            <div class="input-group">
+                                <span class="find-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                    </svg>
+                                </span>
+                                <input asp-for="Filter" class="form-control find-input" placeholder="Find other users to invite" />
+                                <div>
+                                    <button id="find-submit" type="submit" class="btn btn-secondary find-button">Find</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-4">
+            <div class="basic-container p-4 mb-3">
+                @if (Model.Select_UserFriends.Count != 0)
+                {
+                    <form method="post" asp-page-handler="AddFriendsToParticipantList">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <h5> User Friends </h5>
+                            <br />
+                            <select asp-items="@Model.Select_UserFriends" asp-for="Result" class="form-select" multiple></select>
+                        </div>
+                        <br />
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <button type="submit" class="btn btn-secondary w-50"> Add To Invitation List </button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <h5> You don't have user friends at the moment  </h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="basic-container p-4 mb-3">
+                @if (Model.Select_FilteredUsers.Count != 0)
+                {
+                    <form method="post" asp-page-handler="AddUsersToParticipantList">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <h5> Filtered Users </h5>
+                            <br />
+                            <select asp-items="@Model.Select_FilteredUsers" asp-for="Result" class="form-select" multiple></select>
+                        </div>
+                        <br />
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <button type="submit" class="btn btn-secondary w-50"> Add To Invitation List </button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <h5> Users not searched / not found </h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .basic-container {
+        width: 100%;
+        background-color: white;
+        border: 2px solid black;
+    }
+</style>

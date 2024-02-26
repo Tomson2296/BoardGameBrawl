@@ -1,0 +1,165 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.DTO
+@model BoardGameBrawl.Areas.Identity.Pages.Match.CreateMatchModel
+@{
+    ViewData["Title"] = "Create new match";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container-fluid">
+    <form id="create-game-form" method="post" name="create-game-form">
+        <div class="row">
+            <div class="col-6">
+                @if (Model.Chosen_Boardgame != null)
+                {
+                    <div class="basic-container p-4 mb-3">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <div class="card">
+                                @if (Model.Chosen_Boardgame.ImageFile!.StartsWith("http"))
+                                {
+                                    <img src="@Model.Chosen_Boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                                }
+                                else
+                                {
+                                    <img src="~/img/@Model.Chosen_Boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                                }
+                                <h6 class="card-title text-truncate"> @Model.Chosen_Boardgame.Name </h6>
+                            </div>
+                            <br />
+                            <div> 
+                                <h6> Min. number of Players: @Model.Chosen_Boardgame.MinPlayers </h6>
+                                <h6> Max. number of Players: @Model.Chosen_Boardgame.MaxPlayers </h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a asp-page="AddBoardgame">
+                        <div class="basic-container p-4 mb-3">
+                            <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                                <img src="~/img/gamepiece.png" width="64" height="64" />
+                                <br />
+                                <h6> Choose Boardgame </h6>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+            <div class="col-6">
+                @if (Model.Chosen_StartingDate != default)
+                {
+                    <div class="basic-container p-4 mb-3">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/clock.png" width="64" height="64" />
+                            <br />
+                            <h6> Match Date Start: </h6>
+                            <h6> @Model.Chosen_StartingDate </h6>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                     <a asp-page="AddStartingDate">
+                        <div class="basic-container p-4 mb-3">
+                            <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                                <img src="~/img/clock.png" width="64" height="64" />
+                                <br />
+                                <h6> Choose Starting Date </h6>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="basic-container p-4 mb-3">
+                    <h6 class="text-center"> List of players: </h6>
+                    @foreach(BasicUserInfoDTO user in Model.Match_Participants)
+                    {
+                        <div class="d-flex flex-row align-items-center justify-content-center text-center">
+                            @if (user.DTOUserAvatar == null || user.DTOUserAvatar?.Length == 0)
+                            {
+                                <img src="~/img/user.png" class="img-round" alt="" width="48" height="48">
+                            }
+                            else
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(user.DTOUserAvatar!))" class="img-round" alt="" width="48" height="48">
+                            }
+                            <h6> @user.DTOUsername </h6>
+                        </div>
+                    }
+                    <br />
+                    <a asp-page="AddMatchParticipants">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/group.png" width="64" height="64" />
+                            <br />
+                            <h6> Invite Players </h6>
+                        </div>
+                    </a>
+                 </div>
+            </div>
+            <div class="col-6">
+                    @if (Model.LocationData != null && Model.ImageData != null )
+                    {
+                        <div class="basic-container p-4 mb-3">
+                            <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                                <h6> Latitude: @Model.LocationData.ElementAt(0) </h6>
+                                <h6> Longitude: @Model.LocationData.ElementAt(1) </h6>
+                                <br />
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ImageData!))" alt="GoogleStaticMap"
+                                 width="600" height="300" />
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-page="AddGeolocation">
+                            <div class="basic-container p-4 mb-3">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                                    <img src="~/img/globe.png" width="64" height="64" />
+                                    <br />
+                                    <h6> Set Location </h6>
+                                </div>
+                            </div>
+                        </a>
+                    }
+            </div>
+        </div>
+    </form>
+    <div class="row mb-4">
+        <form asp-page-handler="CreateMatch" method="post">
+            <div class="d-flex flex-row justify-content-center text-center align-items-center">
+                <button type="submit" class="w-50 btn btn-secondary"> Create match </button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <form asp-page-handler="AbortCreation" method="post">
+            <div class="d-flex flex-row justify-content-center text-center align-items-center">
+                <button type="submit" class="w-50 btn btn-danger"> Abort </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .basic-container {
+        width: 100%;
+        background-color: white;
+        border: 2px solid black;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .img-round{
+        border-radius: 50%;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

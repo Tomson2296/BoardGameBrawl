@@ -1,0 +1,89 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Your Main Page";
+    ViewData["TableDesc"] = "Your Info:";
+    ViewData["TableUserDesc"] = "Your Description";
+}
+
+<div class="containter-fluid">
+    <div class="row mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div class="row text-center">
+        <h2>
+            @Model.ApplicationUser.UserName
+        </h2>
+    </div>
+    <div class="row mb-3">
+        @if (Model.ApplicationUser.UserAvatar != null)
+        {
+            <div class="d-flex justify-content-center">
+                <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ApplicationUser.UserAvatar))" class="img-fluid img-thumbnail img-round" alt=""
+                     width="300" height="300" />
+            </div>
+        }
+        else
+        {
+            <div class="d-flex justify-content-center">
+                <img src="~/img/user.png" class="img-fluid img-thumbnail img-round" alt="" width="300" height="300" />
+            </div>
+        }
+    </div>
+
+    <div class="row mb-3">
+        <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+            <tbody>
+                <tr>
+                    <td colspan="4"><strong> @ViewData["TableDesc"] </strong></td>
+                </tr>
+                <tr>
+                    <td><strong>  First Name: </strong></td>
+                    <td> @Model.ApplicationUser.FirstName </td>
+                    <td><strong> Last Name: </strong></td>
+                    <td> @Model.ApplicationUser.LastName </td>
+                </tr>
+                <tr>
+                    <td><strong>  Email: </strong></td>
+                    <td> @Model.ApplicationUser.Email </td>
+                    <td><strong> Phone Number: </strong></td>
+                    <td> @Model.ApplicationUser.PhoneNumber </td>
+                </tr>
+                <tr>
+                    <td><strong> Creation Date: </strong></td>
+                    <td> @Model.ApplicationUser.UserCreatedTime </td>
+                    <td><strong> Last Login: </strong></td>
+                    <td> @Model.ApplicationUser.UserLastLogin </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <strong>
+                            @ViewData["TableUserDesc"]
+                        </strong>
+                    </td>
+                <tr>
+                        @if (Model.ApplicationUser.UserDescription == null)
+                        {
+                        <td colspan="4">
+                            No user description
+                        </td>
+                        }
+                        else
+                        {
+                        <td colspan="4">
+                                @Model.ApplicationUser.UserDescription
+                        </td>
+                        }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<style>
+    .img-round
+    {
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+</style>

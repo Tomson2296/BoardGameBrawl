@@ -1,0 +1,54 @@
+﻿@page "{RuleId}"
+@model BoardGameBrawl.Areas.Identity.Pages.Boardgame.RemoveMatchmakingRuleModel
+@{
+    ViewData["Title"] = "Rule deletion";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="text-center p-3 mb-3">
+            <h5>Do you want to remove that rule from that boardgame ruleset? </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-center">
+            <div class="col-6">
+                <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+                    <thead>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td colspan="2"><strong>Description</strong></td>
+                            <td><strong>Decider</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.MatchmakingRule.RuleType.ToString()</td>
+                            <td colspan="2">@Model.MatchmakingRule.RuleDescription!.ToString()</td>
+
+                            @if (Model.MatchmakingRule.RuleDecider == true)
+                            {
+                                <td> <img src="~/img/star.png" alt="star" height="32" width="32" /> </td>
+                            }
+                            else
+                            {
+                                <td> </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-center text-center">
+            <div class="col-6">
+                <form id="deleteRule" method="post">
+                    <button type="submit" class="btn btn-danger"> Delete </button>
+                </form>
+                </br>
+                <a asp-page="ModifyBoardgame" asp-route-BoardgameId="@Model.Boardgame.BGGId" class="btn btn-primary"> Back </a>
+            </div>
+        </div>
+    </div>
+</div>

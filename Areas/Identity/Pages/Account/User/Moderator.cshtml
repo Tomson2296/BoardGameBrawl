@@ -1,0 +1,54 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.Entities
+@model BoardGameBrawl.Areas.Identity.Pages.Account.User.ModeratorPageModel
+@{
+    ViewData["Title"] = "Check boardgames you can modify";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    @if (Model.Boardgames == null)
+    {
+        <div class="row text-center p-3 mb-3">
+            <h3> At the moment you dont have a modification privleges for any boardgames. </h3>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-row flex-wrap text-center">
+            @foreach (BoardgameModel boardgame in Model.Boardgames)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                    <a asp-area="Identity" asp-page="/Boardgame/ModifyBoardgame" asp-route-BoardgameID="@boardgame.BGGId">
+                        <div class="card">
+                            @if (boardgame.ImageFile!.StartsWith("http"))
+                            {
+                                <img src="@boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                            }
+                            else
+                            {
+                                <img src="~/img/@boardgame.ImageFile" class="card-img-top img-fit" alt="" width="200" height="200">
+                            }
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate"> @boardgame.Name </h6>
+                                <h6 class="card-text"><small class="text-muted">@boardgame.YearPublished</small></h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    .img-fit {
+        object-fit: contain;
+    }
+</style>

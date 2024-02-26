@@ -1,0 +1,51 @@
+﻿@page "{BoardgameID}"
+@using BoardGameBrawl.Data.Models.Entities
+@model BoardGameBrawl.Areas.Identity.Pages.Boardgame.ModifyBoardgameModel
+@{
+    ViewData["Title"] = "Boardgame Moderation";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" class="text-danger" />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <div class="text-center p-3 mb-3">
+                <h5>Create a new rule</h5>
+            </div>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.RuleDescription" class="form-control" autocomplete="" aria-required="true" placeholder="" />
+                    <label asp-for="Input.RuleDescription" class="form-label">Rule Description</label>
+                    <span asp-validation-for="Input.RuleDescription" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RuleDecider" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RuleDecider" />
+                        @Html.DisplayNameFor(m => m.Input.RuleDecider)
+                    </label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select name="ruleTypeSelect" asp-for="Input.RuleType" class="form-select">
+                        <option value="Boolean">Boolean</option>
+                        <option value="Int">Int</option>
+                        <option value="String">String</option>
+                    </select>
+                    <label for="ruleTypeSelect">Rule Type</label>
+                    <span asp-validation-for="Input.RuleType" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button asp-page-handler="AddRuleToBoardgame" id="rule-submit" type="submit" class="w-75 btn btn-lg btn-secondary">Add rule</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-6">
+            <partial name="_BoardgameRulesPartial" model="Model.MatchmakingRules" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

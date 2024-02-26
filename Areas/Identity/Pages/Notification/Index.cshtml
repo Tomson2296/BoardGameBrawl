@@ -1,0 +1,230 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.Entities
+@model BoardGameBrawl.Areas.Identity.Pages.Notification.IndexModel
+@{
+    ViewData["Title"] = "Check your notifications";
+}
+
+<div class="container-fluid">
+    @if (!Model.UserNotification.Any())
+    {
+        <div class="row text-center">
+            <h3> You have no new notifications. </h3>
+        </div>
+    }
+    else
+    {
+        @foreach (UserNotification notifications in Model.UserNotification)
+        {
+            @if (notifications.NotificationType == NotificationType.AddToFriends)
+            {
+                <div class="row">
+                    @if(!notifications.IsShown)
+                    {
+                        <div class="d-flex p-2 mb-3 flex-row bd-highlight justify-content-center align-items-center message-div-style">
+                            <div class="me-auto p-2 bd-highlight text-truncate">
+                                <strong> @notifications.Notification </strong>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="acceptFriends" method="post" asp-page-handler="AcceptFriendsInvitation">
+                                    <input type="hidden" value="@notifications.Id" name="notificationID"/>
+                                    <button type="submit" value="@notifications.Id">
+                                         <img src="~/img/accept.png" class="img-thumbnail" alt="" width="32" height="32">
+                                    </button>
+                                 </form>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="declineFriends" method="post" asp-page-handler="DeclineNotification">
+                                    <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                    <button type="submit" value="@notifications.Id">
+                                        <img src="~/img/decline.png" class="img-thumbnail" alt="" width="32" height="32">
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex p-2 mb-3 flex-row bd-highlight align-items-center message-div-style-seen">
+                            <div class="me-auto p-2 bd-highlight text-truncate">
+                                <strong> @notifications.Notification </strong>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="deleteNotification" method="post" asp-page-handler="DeleteNotification">
+                                    <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                    <button type="submit" value="@notifications.Id">
+                                        <img src="~/img/bin.png" class="img-thumbnail" alt="" width="32" height="32">
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            else if (notifications.NotificationType == NotificationType.AddToGroup)
+            {
+                <div class="row">
+                    @if (!notifications.IsShown)
+                    {
+                        <div class="d-flex p-2 mb-3 flex-row bd-highlight justify-content-center align-items-center message-div-style">
+                            <div class="me-auto p-2 bd-highlight text-truncate">
+                                <strong> @notifications.Notification </strong>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="acceptGroup" method="post" asp-page-handler="AcceptGroupInvitation">
+                                    <img src="~/img/accept.png" class="img-thumbnail" alt="" width="64" height="64">
+                                </form>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="declineGroup" method="post" asp-page-handler="DeclineNotification">
+                                    <img src="~/img/decline.png" class="img-thumbnail" alt="" width="64" height="64">
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex p-2 mb-3 flex-row bd-highlight align-items-center message-div-style-seen">
+                            <div class="me-auto p-2 bd-highlight text-truncate">
+                                <strong> @notifications.Notification </strong>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <form id="deleteNotification" method="post" asp-page-handler="DeleteNotification">
+                                    <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                    <button type="submit" value="@notifications.Id">
+                                        <img src="~/img/bin.png" class="img-thumbnail" alt="" width="32" height="32">
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            else if (notifications.NotificationType == NotificationType.AddToModeratorRole)
+            {
+                @if (!notifications.IsShown)
+                {
+                    <div class="d-flex p-2 mb-3 flex-row bd-highlight justify-content-center align-items-center message-div-style">
+                        <div class="me-auto p-2 bd-highlight text-truncate">
+                            <strong> @notifications.Notification </strong>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="acceptModeratorGroup" method="post" asp-page-handler="AcceptUserToModeratorGroup">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/accept.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="declineModeratorGroup" method="post" asp-page-handler="DeclineNotification">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/decline.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex p-2 mb-3 flex-row bd-highlight align-items-center message-div-style-seen">
+                        <div class="me-auto p-2 bd-highlight text-truncate">
+                            <strong> @notifications.Notification </strong>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="deleteModeratorGroupNotification" method="post" asp-page-handler="DeleteNotification">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/bin.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+
+            else if (notifications.NotificationType == NotificationType.AddToBoardGameModeration)
+            {
+                @if (!notifications.IsShown)
+                {
+                    <div class="d-flex p-2 mb-3 flex-row bd-highlight justify-content-center align-items-center message-div-style">
+                        <div class="me-auto p-2 bd-highlight text-truncate">
+                            <strong> @notifications.Notification </strong>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="acceptBoardgameModeration" method="post" asp-page-handler="AcceptUserToBoardgameModeration">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/accept.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="declineBoardgameModeration" method="post" asp-page-handler="DeclineNotification">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/decline.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                
+                else
+                {
+                    <div class="d-flex p-2 mb-3 flex-row bd-highlight align-items-center message-div-style-seen">
+                        <div class="me-auto p-2 bd-highlight text-truncate">
+                            <strong> @notifications.Notification </strong>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <form id="deleteBoardgameModerationNotification" method="post" asp-page-handler="DeleteNotification">
+                                <input type="hidden" value="@notifications.Id" name="notificationID" />
+                                <button type="submit" value="@notifications.Id">
+                                    <img src="~/img/bin.png" class="img-thumbnail" alt="" width="32" height="32">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+
+            else if (notifications.NotificationType == NotificationType.Response)
+            {
+                <div class="d-flex p-2 mb-3 flex-row bd-highlight align-items-center message-div-style-seen">
+                    <div class="me-auto p-2 bd-highlight text-truncate">
+                        <strong> @notifications.Notification </strong>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <form id="deleteBoardgameModerationNotification" method="post" asp-page-handler="DeleteNotification">
+                            <input type="hidden" value="@notifications.Id" name="notificationID" />
+                            <button type="submit" value="@notifications.Id">
+                                <img src="~/img/bin.png" class="img-thumbnail" alt="" width="32" height="32">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+            else
+            {
+
+            }
+        }
+    }
+</div>
+
+<style>
+    .message-div-style {
+        border: 1px solid black;
+        border-radius: 10px 10px;
+        color: black;
+    }
+
+    .message-div-style-seen {
+        border: 1px solid grey;
+        border-radius: 10px 10px;
+        color: grey;
+    }
+</style>

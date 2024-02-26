@@ -1,0 +1,46 @@
+﻿@page "{BoardgameID}"
+@using BoardGameBrawl.Data.Models.API_XML
+@model BoardGameBrawl.Areas.Identity.Pages.Boardgame.VideosModel
+@{
+    ViewData["Title"] = "Boardgame Instructional Videos";
+}
+
+<partial name="_BoardgameNavPartial" />
+
+<div class="row mb-4">
+    <div class="col-6">
+        <div class="d-flex flex-row flex-wrap text-center justify-content-center">
+            <form id="selectVideo" method="post" name="selectVideoForm">
+                <div class="input-group">
+                    <select asp-for="LanguageSelection" name="Language" class="selectpicker" id="LanguagePicker">
+                        @foreach (string option in Model.LanguageSelection)
+                        {
+                            <option value="@option"> @option </option>
+                        }
+                    </select>
+                    <div>
+                        <button id="language-submit" type="submit" class="btn btn-secondary"> Choose language</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="d-flex flex-row flex-wrap text-center">
+            @foreach (Video video in Model.InstructionalVideos)
+            {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="card">
+                    <img src="~/img/video-player.png" class="card-img-top" alt="" width="175" height="200">
+                    <div class="card-body">
+                        <a href="@video.Link">
+                            <h5 class="card-title"> @video.Title </h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            }
+    </div>
+</div>

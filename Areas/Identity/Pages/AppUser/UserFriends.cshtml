@@ -1,0 +1,83 @@
+﻿@page "{UserName}"
+@using BoardGameBrawl.Data.Models.DTO
+@using BoardGameBrawl.Data.Models.Entities
+@inject BoardGameBrawl.Data.Stores.Interfaces.IUserFriendStore<UserFriend, ApplicationUser> UserFriendService
+@model BoardGameBrawl.Areas.Identity.Pages.AppUser.UserFriendsModel
+@{
+    ViewData["Title"] = "Check User's Friends";
+}
+
+<div class="container-fluid">
+
+    <partial name="_StatusMessage" for="StatusMessage" class="text-danger" />
+
+    <div class="row mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div class="row">
+        @if (!Model.UserFindFriends.Any())
+        {
+            <div class="text-center p-3 justify-content-center">
+                <h3> That user doesn't have any friends on the platform at the moment. </h3>
+                <h5> Maybe you want to add that user to your list of friends? </h5>
+            </div>
+
+            <div class="text-center p-3 justify-content-center">
+                <form id="addToFriends" method="post" asp-page-handler="AddUserToFriends">
+                    <div>
+                        <button id="add-to-friends-submit" type="submit" class="btn btn-lg btn-primary">Add @Model.ApplicationUser.UserName to friends</button>
+                    </div>
+                </form>
+            </div>
+        }
+        else
+        {
+            @if (!await UserFriendService.CheckIfFriendshipExistsAsync(Model.ActiveUser.Id, Model.ApplicationUser.Id, CancellationToken.None) &&
+                !await UserFriendService.CheckIfFriendshipExistsAsync(Model.ApplicationUser.Id, Model.ActiveUser.Id, CancellationToken.None))
+            {
+                <div class="text-center p-3 justify-content-center">
+                    <form id="addToFriends" method="post" asp-page-handler="AddUserToFriends">
+                        <div>
+                            <button id="add-to-friends-submit" type="submit" class="btn btn-lg btn-primary">Add @Model.ApplicationUser.UserName to friends</button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+            <div class="d-flex flex-row flex-wrap text-center">
+                @foreach (BasicUserInfoDTO user in Model.UserFindFriends)
+                {
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                        <a asp-area="Identity" asp-page="/AppUser/Index" asp-route-UserName="@user.DTOUsername">
+                            <div class="card">
+                                @if (user.DTOUserAvatar == null || user.DTOUserAvatar?.Length == 0)
+                                {
+                                    <img src="~/img/user.png" class="card-img-top img-round" alt="" width="200" height="200" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(user.DTOUserAvatar!))" class="card-img-top img-round" alt="" width="200" height="200" />
+                                }
+                                <div class="card-body">
+                                    <h6 class="card-title text-truncate"> @user.DTOUsername </h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .img-round {
+        border-radius: 50%;
+    }
+</style>

@@ -1,0 +1,31 @@
+﻿@page "{MessageId}"
+@model BoardGameBrawl.Areas.Identity.Pages.Mailbox.ViewMessageModel
+@{
+    ViewData["Title"] = "View message";
+}
+
+<div class="row">
+    <div class="col-sm-3 col-lg-2">
+        <partial name="_MessagesView" />
+    </div>
+    <div class="col-sm-9 col-lg-10">
+            <div class="d-flex p-2 flex-column bd-highlight">
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Sender.DTOUsername" class="form-control" aria-required="true" placeholder="" readonly />
+                    <label asp-for="@Model.Sender.DTOUsername" class="form-label">From</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Receiver.DTOUsername" class="form-control" aria-required="true" placeholder="" readonly />
+                    <label asp-for="@Model.Receiver.DTOUsername" class="form-label">To</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Message.MessageTopic" class="form-control" aria-required="true" placeholder="" readonly />
+                    <label asp-for="@Model.Message.MessageTopic" class="form-label">Topic:</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Message.MessageBody" class="form-control" aria-required="true" placeholder="" readonly />
+                    <label asp-for="@Model.Message.MessageBody" class="form-label">Message:</label>
+                </div>
+            </div>
+    </div>
+</div>

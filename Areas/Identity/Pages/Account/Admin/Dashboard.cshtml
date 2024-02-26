@@ -1,0 +1,24 @@
+﻿@page 
+@model DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["ActivePage"] = AdminWorkflowsPages.Dashboard;
+}
+
+<h3> @ViewData["Title"] </h3>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="p-3 mb-3">
+            <table class="table table-sm table-striped table-bordered"> 
+                <thead> Overview </thead>
+                <br />
+                <tbody>
+                    <tr><th>Users in store:</th><td>@Model.UsersCount</td></tr> 
+                    <tr><th>Unconfirmed accounts:</th><td>@Model.UsersUnconfirmed</td></tr> 
+                    <tr><th>Locked out users:</th><td>@Model.UsersLockedout</td></tr> 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

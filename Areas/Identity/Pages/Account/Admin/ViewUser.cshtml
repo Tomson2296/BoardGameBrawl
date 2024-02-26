@@ -1,0 +1,38 @@
+﻿@page "{Id}"
+@model ViewUserModel
+@{
+    ViewData["Title"] = "View user's data";
+    ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <table class="table table-sm table-striped table-bordered text-center mb-3">
+                <thead>
+                    <tr>
+                        <th> Key </th>
+                        <th> Value </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (string name in Model.PropertyNames)
+                    {
+                        <tr>
+                            <td><strong> @name </strong></td>
+                            <td class="text-truncate" style="max-width:250px">
+                                @Model.GetValue(name)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex flex-row align-items-center justify-content-around">
+                <a asp-page="EditUser" asp-route-id="@Model.Id" class="btn btn-warning btn-block w-25"> Edit </a>
+                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-primary btn-block w-25"> Back </a>
+            </div>
+        </div>
+    </div>
+</div>

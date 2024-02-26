@@ -1,0 +1,52 @@
+﻿@page "{BoardgameID}"
+@model IndexModel
+@{
+    ViewData["Title"] = "Boardgame Preview";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<partial name="_BoardgameNavPartial" />
+
+<div class="container-fluid">
+    <div id="boardgameDesc">
+        <div class="row mb-4">
+            <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+                <tbody>
+                    <tr>
+                        <td><strong> Year Published: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.YearPublished.Value </td>
+                        <td><strong> Average Game Rank: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.Statistics.Ratings.Average.Value </td>
+                        <td><strong> Average Game Weight: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.Statistics.Ratings.AverageWeight.Value </td>
+                    </tr>
+                    <tr>
+                        <td><strong> Min. number of players: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.MinPlayers.Value </td>
+                        <td><strong> Max. number of players: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.MaxPlayers.Value </td>
+                        <td><strong> Min. Age: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.MinAge.Value </td>
+                    </tr>
+                    <tr>
+                        <td><strong> Playing time: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.PlayingTime.Value </td>
+                        <td><strong> Min. Playing time: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.MinPlayTime.Value </td>
+                        <td><strong> Max. Playing time: </strong></td>
+                        <td> @Model.Boardgame.GameInfo.MaxPlayTime.Value </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mb-4">
+            <h5> Game Description: </h5>
+            @for (int i = 0; i < Model.BoardgameDescription.Count(); i++)
+            {
+                <p> @Model.BoardgameDescription.ElementAt(i).ToString() </p>
+            }
+        </div>
+    </div>
+</div>

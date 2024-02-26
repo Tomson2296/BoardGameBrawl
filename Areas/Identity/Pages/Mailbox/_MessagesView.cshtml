@@ -1,0 +1,51 @@
+﻿@using BoardGameBrawl.Data.Models.Entities
+@using BoardGameBrawl.Data.Models.DTO
+@using static BoardGameBrawl.Areas.Identity.Pages.Mailbox.IndexModel
+@{
+}
+
+<div class="row">
+    <div class="d-flex flex-column bd-highlight justify-content-center align-items-center text-center">
+        <a asp-page="SendMessage">
+            <div class="bd-highlight d-flex-inline flex-row div-style">
+                <div class="p-3 mb-1 inbox-style">
+                    <img src="~/img/paper-plane.png" alt="inboxIcon" class="img-style" />
+                    <h5> Send Message </h5>
+                </div>
+            </div>
+        </a>
+        <a asp-page="Inbox">
+            <div class="bd-highlight d-flex-inline flex-row div-style"> 
+                <div class="p-3 mb-1 inbox-style">
+                    <img src="~/img/inbox.png" alt="inboxIcon" class="img-style" />
+                    <h5> Inbox </h5>
+                </div>
+            </div>
+        </a>
+        <a asp-page="Outbox">
+            <div class="bd-highlight d-flex-inline flex-row div-style">
+                <div class="p-3 mb-1 inbox-style">
+                    <img src="~/img/outbox.png" alt="outboxIcon" class="img-style" />
+                    <h5> Outbox </h5>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<style>
+    a
+    {
+        color: black;
+        text-decoration: none;
+    }
+    .inbox-style
+    {
+        background-color: beige;
+        border-radius: 10px 10px;
+        border: 1px solid black;
+    }
+    .img-style
+    {
+        width: 60%;
+    }
+</style>

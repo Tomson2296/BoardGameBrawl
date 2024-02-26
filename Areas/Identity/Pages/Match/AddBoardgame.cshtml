@@ -1,0 +1,62 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.DTO
+@model BoardGameBrawl.Areas.Identity.Pages.Match.AddBoardgameModel
+@{
+    ViewData["Title"] = "Add boardgame to match";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3 d-flex justify-content-center">
+        <div class="col-sm-12 col-md-8">
+            <form id="findForm" method="post" name="findForm">
+                <div class="input-group">
+                    <span class="find-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </span>
+                    <input asp-for="Filter" class="form-control find-input" placeholder="" />
+                    <div>
+                        <button id="find-submit" type="submit" class="btn btn-secondary find-button">Find</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  
+        @if (Model.Filtered_Boardgames != null)
+        {
+            <div class="container">
+                <div class="d-flex flex-row flex-wrap text-center">
+                    @foreach (BoardgameDTO boardgame in Model.Filtered_Boardgames)
+                    {
+                        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                            <form method="post" asp-page-handler="SetBoardgame">
+                                <input type="hidden" value="@boardgame.Id" name="BoardgameId" />
+                                    <div class="card">
+                                        @if (boardgame.BoardgamePic!.StartsWith("http"))
+                                        {
+                                            <img src="@boardgame.BoardgamePic" class="card-img-top img-fit" alt="" width="200" height="200">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/@boardgame.BoardgamePic" class="card-img-top img-fit" alt="" width="200" height="200">
+                                        }
+                                        <div class="card-body">
+                                            <h6 class="card-title text-truncate"> @boardgame.Name </h6>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-center">
+                                            <button type="submit" class="w-75 btn btn-secondary"> Choose </button>
+                                        </div>
+                                    </div>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+
+        }
+</div>

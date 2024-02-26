@@ -1,0 +1,74 @@
+﻿@page
+@model BoardGameBrawl.Areas.Identity.Pages.Match.AddGeolocationModel
+@using BoardGameBrawl.Data.Models.Entities
+@{
+    ViewData["Title"] = "Add Match Geolocation Data";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <form id="set-match-geolocation-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Street" class="form-control" placeholder="Please enter your city" />
+                    <label asp-for="Input.Street" class="form-label"></label>
+                    <span asp-validation-for="Input.Street" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.City" class="form-control" placeholder="Please enter your city" />
+                    <label asp-for="Input.City" class="form-label"></label>
+                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <div class="d-flex flex-row align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-secondary w-75"> Add Match Geo Data </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex flex-column align-items-center justify-content-center p-3">
+                @if (Model.LocationData.Count != 0)
+                {
+                    <h4> Your specified location: </h4>
+                    <h5> Latitude: @Model.LocationData.ElementAt(0) </h5>
+                    <h5> Longitude: @Model.LocationData.ElementAt(1) </h5>
+                }
+                else
+                {
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row p-4">
+    <div class="d-flex align-items-center justify-content-center">
+        @if (Model.ImageData != null)
+        {
+            <div id="map">
+                <img src="data:image/*;base64,@(Convert.ToBase64String(Model.ImageData!))" alt="GoogleStaticMap"
+                     width="600" height="300" />
+            </div>
+        }
+        else
+        {
+            <h4> No specified location to show </h4>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <a asp-page="CreateMatch">
+        <div class="d-flex align-items-center justify-content-center">
+            <button type="submit" class="btn btn-primary w-50"> Back to Match panel </button>
+        </div>
+    </a>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

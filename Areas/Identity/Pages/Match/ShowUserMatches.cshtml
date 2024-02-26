@@ -1,0 +1,108 @@
+﻿@page "{UserName}"
+@using BoardGameBrawl.Data.Models.Entities
+@using BoardGameBrawl.Data.Models.DTO
+@inject UserManager<ApplicationUser> UserManager
+@model BoardGameBrawl.Areas.Identity.Pages.Match.ShowUserMatchesModel
+@{
+    ViewData["Title"] = "Check your matches";
+    int enumerator = 0;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <form asp-page-handler="ShowUpcoming" method="post">
+                <div class="basic-container p-3 mb-3">
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/upcoming.png" width="64" height="64" />
+                            <br />
+                            <button type="submit" class="btn btn-secondary w-100"> Upcoming </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-6">
+            <form asp-page-handler="ShowOngoing" method="post">
+                <div class="basic-container p-3 mb-3">
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/ongoing2.png" width="64" height="64" />
+                            <br />
+                            <button type="submit" class="btn btn-secondary w-100"> Active / Ongoing </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    @if (Model.UserMatches.Count() != 0)
+    {
+        @for (int i = 0; i < Model.UserMatches.Count(); i++)
+        {
+        <a asp-page="ViewMatch" asp-route-MatchId="@Model.UserMatches.ElementAt(enumerator).Id">
+            <div class="basic-container mb-3">
+                <div class="d-flex flex-row">
+                    <div class="d-flex flex-column flex-fill align-items-center justify-content-center text-center p-3">
+                        <div>
+                            @if (Model.BoardgameList.ElementAt(enumerator).BoardgamePic!.StartsWith("http"))
+                            {
+                                <img src="@Model.BoardgameList.ElementAt(enumerator).BoardgamePic" width="150" height="150" />
+                            }
+                            else
+                            {
+                                <img src="~/img/@Model.BoardgameList.ElementAt(enumerator).BoardgamePic" width="150" height="150" />
+                            }
+                        </div>
+                        <div>
+                            <h5> @Model.BoardgameList.ElementAt(enumerator).Name </h5>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-fill align-items-center justify-content-center text-center p-3">
+                        <h5> Host: </h5>
+                        @if (@Model.UserList.ElementAt(enumerator).DTOUserAvatar == null || @Model.UserList.ElementAt(enumerator).DTOUserAvatar?.Length == 0)
+                        {
+                            <img src="~/img/user.png" class="img-round" alt="" width="64" height="64" />
+                        }
+                        else
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(@Model.UserList.ElementAt(enumerator).DTOUserAvatar!))" class="card-img-top img-round" alt="" width="64" height="64" />
+                        }
+                        <h5> @Model.UserList.ElementAt(enumerator).DTOUsername </h5>
+                    </div>
+
+                    <div class="d-flex flex-column flex-fill align-items-center justify-content-center text-center p-3">
+                        <h6> Match Created: </h6>
+                        <h6> <strong>@Model.UserMatches.ElementAt(enumerator).MatchCreated</strong> </h6>
+                        <br />
+                        <h6> Match Starting: </h6>
+                        <h6> <strong>@Model.UserMatches.ElementAt(enumerator).MatchDate_Start</strong> </h6>
+                        <br />
+                        <h6> Status: </h6>
+                        <h6> <strong>@Model.UserMatches.ElementAt(enumerator).MatchProgress</strong> </h6>
+                    </div>
+                </div>
+            </div>
+        </a>
+        enumerator++;
+        }
+    }
+</div>
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    .basic-container {
+        width: 100%;
+        background-color: white;
+        border: 2px solid black;
+    }
+    .img-round{
+        border-radius: 50%;
+    }
+</style>

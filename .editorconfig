@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# IDE0290: Użyj konstruktora podstawowego
+dotnet_diagnostic.IDE0290.severity = none
+
+# IDE0090: Użyj operatora „new(...)”
+dotnet_diagnostic.IDE0090.severity = none

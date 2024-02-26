@@ -1,0 +1,9 @@
+﻿<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.IndexNavClass(ViewContext)" id="index" asp-page="./Index">Index</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.DashboardNavClass(ViewContext)" id="dashboard" asp-page="./Dashboard">Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.ListUsersNavClass(ViewContext)" id="manage" asp-page="./ManageUsers" asp-route-PageNumber="1">Manage Users</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.LockoutsNavClass(ViewContext)" id="lockouts" asp-page="./Lockouts" asp-route-PageNumber="1">Lockouts</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.PasswordsNavClass(ViewContext)" id="passwords" asp-page="./Passwords" asp-route-PageNumber="1">Passwords</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.CreateUserNavClass(ViewContext)" id="create" asp-page="./CreateUser">Create User</a></li>
+    <li class="nav-item"><a class="nav-link @AdminWorkflowsPages.UserRolesNavClass(ViewContext)" id="roles" asp-page="./UserRoles">User Roles</a></li>
+</ul>

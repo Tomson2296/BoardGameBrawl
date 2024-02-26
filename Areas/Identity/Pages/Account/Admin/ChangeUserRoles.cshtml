@@ -1,0 +1,89 @@
+﻿@page "{Id}"
+@model ChangeUserRolesModel
+@{
+    ViewData["Title"] = "Change that user's roles in application";
+    ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <div asp-validation-summary="All" class="text-danger m-2"></div>
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="2" class="text-center">User's Roles</th></tr></thead>
+                <tbody>
+                    @if (Model._roleManager.Roles.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="2" class="text-center py-2">
+                                No roles have been defined
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @if (Model.CurrentRoles.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center py-2">
+                                    User has no roles
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (string role in Model.CurrentRoles)
+                            {
+                                <tr>
+                                    <td><strong> @role </strong></td>
+                                    <td>
+                                        <form method="post" asp-page-handler="DeleteUserFromRole">
+                                            <input type="hidden" asp-for="Id" />
+                                            <input type="hidden" name="role" value="@role" />
+                                            <button type="submit" class="btn btn-danger btn-block w-50">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @if (Model.AvailableRoles.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center py-2">
+                                    User is in all roles
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <select class="form-control" name="role" form="addForm">
+                                        <option selected disabled>Choose Role</option>
+                                        @foreach (string role in Model.AvailableRoles)
+                                        {
+                                            <option>@role</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <form method="post" asp-page-handler="AddUserToRole" id="addForm">
+                                        <input type="hidden" asp-for="Id" />
+                                        <button type="submit" class="btn btn-success btn-block w-50">
+                                            Add
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

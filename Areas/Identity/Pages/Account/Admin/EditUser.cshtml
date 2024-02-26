@@ -1,0 +1,75 @@
+﻿@page "{Id}"
+@model EditUserModel
+@{
+    ViewData["Title"] = "Edit that user's data";
+    ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
+}
+
+<h3> @ViewData["Title"] </h3>
+
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.UserName" class="form-control" autocomplete="" aria-required="true"/>
+                    <label asp-for="ApplicationUser.UserName" class="form-label"> Username </label>
+                    <span asp-validation-for="ApplicationUser.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.Email" class="form-control" autocomplete="" aria-required="true" />
+                    <label asp-for="ApplicationUser.Email" class="form-label"> Email </label>
+                    <span asp-validation-for="ApplicationUser.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" asp-for="ApplicationUser.NormalizedUserName" class="form-control" readonly />
+                    <label asp-for="ApplicationUser.NormalizedEmail" class="form-label"> Normalized Email </label>
+                    <span asp-validation-for="ApplicationUser.NormalizedEmail" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.EmailConfirmed"  class="form-check-input" />
+                    @Html.DisplayNameFor(m => m.ApplicationUser.EmailConfirmed)
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.PhoneNumber" class="form-control" autocomplete="" />
+                    <label asp-for="ApplicationUser.PhoneNumber" class="form-label"> Phone Number </label>
+                    <span asp-validation-for="ApplicationUser.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.PhoneNumberConfirmed" class="form-check-input" autocomplete=""/>
+                    @Html.DisplayNameFor(m => m.ApplicationUser.PhoneNumberConfirmed)
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.FirstName" class="form-control" autocomplete="" />
+                    <label asp-for="ApplicationUser.FirstName" class="form-label"> First Name </label>
+                    <span asp-validation-for="ApplicationUser.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.LastName" class="form-control" autocomplete="" />
+                    <label asp-for="ApplicationUser.LastName" class="form-label"> Last Name </label>
+                    <span asp-validation-for="ApplicationUser.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.BGGUsername" class="form-control" autocomplete="" />
+                    <label asp-for="ApplicationUser.BGGUsername" class="form-label"> BGGUsername </label>
+                    <span asp-validation-for="ApplicationUser.BGGUsername" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea asp-for="ApplicationUser.UserDescription" class="form-control"> User Description </textarea>
+                    <label asp-for="ApplicationUser.UserDescription" class="form-label"> User Description </label>
+                    <span asp-validation-for="ApplicationUser.UserDescription" class="text-danger"></span>
+                </div>
+                <div class="d-flex flex-row align-items-center justify-content-around">
+                    <button type="submit" class="btn btn-primary btn-block w-25">Save</button>
+                    <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-25">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

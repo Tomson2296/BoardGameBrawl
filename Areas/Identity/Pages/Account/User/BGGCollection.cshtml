@@ -1,0 +1,51 @@
+﻿@page
+@model BGGCollectionModel
+@{
+    ViewData["title"] = "Check your BGG Collection";
+}
+
+<div class="container-fluid">
+    @if (Model.ApplicationUser.BGGUsername == null)
+    {
+        <div class="row text-center">
+            <h3> You dont have an BGG Account? </h3>
+            <h5> Check out BoardGameGeek website at https://www.boardgamegeek.com and register your account to export your boardgame collection to our website :) </h5>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-3">
+            <h3> @ViewData["title"] </h3>
+            <h6> We download your Boardgame collection using BGG API, including only boardgame base sets (excluding board game expansions) </h6>
+            <h6> By clicking one of the games below, you can navigate to proper board game site and start your competitive journey </h6>
+        </div>
+
+        <div class="container">
+            <div class="d-flex flex-row flex-wrap text-center">
+                @for (int i = 0; i < Model.UserBoardGameCollection.TotalItems; i++)
+                {
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                        <a asp-area="Identity" asp-page="/Boardgame/Index" asp-route-BoardgameID="@Model.UserBoardGameCollection.Games[i].ObjectId">
+                        <div class="card">
+                            <img src="@Model.UserBoardGameCollection.Games[i].Image" class="card-img-top img-fit" alt="" width="200" height="200">
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate"> @Model.UserBoardGameCollection.Games[i].Name.GameName </h6>
+                                <p class="card-text"><small class="text-muted">@Model.UserBoardGameCollection.Games[i].YearPublished</small></p>
+                            </div>
+                        </div>
+                        </a>
+                   </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    .img-fit {
+        object-fit: contain;
+    }
+</style>

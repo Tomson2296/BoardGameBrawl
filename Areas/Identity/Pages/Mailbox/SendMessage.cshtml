@@ -1,0 +1,61 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.DTO
+@model BoardGameBrawl.Areas.Identity.Pages.Mailbox.SendMessageModel
+@{
+    ViewData["Title"] = "Send message to friend";
+}
+
+<div class="row">
+    <div class="col-sm-3 col-lg-2">
+        <partial name="_MessagesView" />
+    </div>
+    <div class="col-sm-9 col-lg-10">
+        @if (Model.FriendsList.Count() == 0 || Model.FriendsList == null)
+        {
+            <div class="d-flex flex-row justify-content-center">
+                <h4> You need to add friend in order to send message </h4>
+            </div>
+        }
+        else
+        {
+            <div class="row mb-3">
+                <h4> Choose one friend from list below to send a new message: </h4>
+            </div>
+
+            <div class="d-flex flex-row flex-wrap text-center">
+                @foreach (BasicUserInfoDTO friend in Model.FriendsList)
+                {
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3">
+                        <a asp-area="Identity" asp-page="/AppUser/SendMessage" asp-route-UserName="@friend.DTOUsername">
+                                <div class="card">
+                                    @if (friend.DTOUserAvatar != null)
+                                    {
+                                        <img src="data:image/*;base64,@(Convert.ToBase64String(friend.DTOUserAvatar!))"
+                                             class="img-fluid img-thumbnail img-round" alt="user_picture" width="200" height="200" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/user.png" class="img-fluid img-thumbnail img-round" alt="" width="200" height="200" />
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title text-truncate"> @friend.DTOUsername </h5>
+                                    </div>
+                                </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+<style>
+    .message-div-style 
+    {
+        border: 1px solid black;
+        border-radius: 10px 10px;
+    }
+    .img-round 
+    {
+        border-radius: 50%;
+    }
+</style>

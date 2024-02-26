@@ -1,0 +1,71 @@
+﻿@page "{ChosenRole}/{PageNumber:int}"
+@model UsersInRoleModel
+@{
+    ViewData["Title"] = "Manage user's roles in application";
+    ViewData["ActivePage"] = AdminWorkflowsPages.UserRoles;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="2" class="text-center">Users in role</th></tr></thead>
+                <tbody>
+                    @{
+                        int usersInRoleCount = Model.UsersInRoles.Count;
+                        @if (usersInRoleCount == 0)
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    No role has been chosen / No users in chosen role
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @for (int i = 0; i < usersInRoleCount; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong> @Model.UsersInRoles[i].DTOUsername </strong>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-page-handler="RemoveUserFromRole">
+                                            <input type="hidden" name="role" value="@Model.UsersInRoles[i].DTOUserID" />
+                                            <button type="submit" class="btn btn-danger btn-block w-50">
+                                                Remove from role
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>     
+            @if (Model.PageNumber == 1 && Model.TotalUsersNumber < Model.PageSize)
+            {
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
+            else if (Model.PageNumber == 1 && Model.TotalUsersNumber >= Model.PageSize)
+            {
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else if ((Model.TotalUsersNumber - Model.PageNumber * Model.PageSize) >= Model.PageSize)
+            {
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else
+            {
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a asp-page="UsersInRole" asp-route-ChosenRole="@Model.ChosenRole" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
+        </div>
+    </div>
+    <a asp-page="UserRoles" class="btn btn-secondary btn-block"> Back </a>
+</div>

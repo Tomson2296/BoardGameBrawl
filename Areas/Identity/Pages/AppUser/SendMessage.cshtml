@@ -1,0 +1,44 @@
+﻿@page "{UserName}"
+@model SendMessageModel
+@{
+    ViewData["Title"] = "Send message to user";
+}
+<h3> @ViewData["Title"] </h3>
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container-fluid">
+    <div class="row p-4">
+        <div class="col-8">
+                <form id="message" method="post">
+                <input type="hidden" value="@Model.ApplicationUser.Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Sender" class="form-control" aria-required="true" placeholder="" readonly />
+                        <label asp-for="Input.Sender" class="form-label">From</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Receiver" class="form-control" aria-required="true" placeholder="" readonly />
+                        <label asp-for="Input.Receiver" class="form-label">To</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.MessageTopic" class="form-control" aria-required="true" placeholder="" />
+                        <label asp-for="Input.MessageTopic" class="form-label">Title</label>
+                        <span asp-validation-for="Input.MessageTopic" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Input.MessageBody" class="form-control" aria-required="true" placeholder=""></textarea>
+                        <label asp-for="Input.MessageBody" class="form-label">Message</label>
+                        <span asp-validation-for="Input.MessageBody" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <button id="message-submit" type="submit" class="w-100 btn btn-lg btn-primary">Send message</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

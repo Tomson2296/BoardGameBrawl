@@ -1,0 +1,52 @@
+﻿@page "{Id}"
+@model ChangeUserClaimsModel
+@{
+    ViewData["Title"] = "Change that user's application claims";
+    ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
+    int identId = 0;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div asp-validation-summary="All" class="text-danger m-2"></div>
+<h3>@ViewData["Title"]</h3>
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="4" class="text-center">Identity</th></tr></thead>
+                <tbody>
+                    @foreach(var c in Model.Claims)
+                    {
+                        <tr>
+                            <td>@c.Type</td>
+                            <td>@c.Value</td>
+                            <td>
+                                <form method="post" id=@("editForm"+identId)>
+                                    <input type="hidden" name="type" value="@c.Type" />
+                                    <input type="hidden" name="oldValue" value="@c.Value" />
+                                    <input class="form-control" name="value" value="@c.Value" />
+                                </form>
+                            </td>
+                            <td>
+                                <button type="submit" form=@("editForm"+identId)
+                                        class="btn btn-warning btn-block w-100"
+                                        asp-page-handler="EditClaim">
+                                    Edit
+                                </button>
+
+                                <button type="submit" form=@("editForm"+identId)
+                                        class="btn btn-danger btn-block w-100"
+                                        asp-page-handler="DeleteClaim">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex flex-row align-items-center justify-content-center">
+                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-50"> Back </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@page
+@using BoardGameBrawl.Data.Models.Entities
+@inject BoardGameBrawl.Data.Stores.Interfaces.IUserScheduleStore<UserSchedule, ApplicationUser> UserScheduleService
+@inject BoardGameBrawl.Services.IDateService DateService
+@model BoardGameBrawl.Areas.Identity.Pages.Match.IndexModel
+@{
+    ViewData["Title"] = "Playing panel";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-9">
+            <form id="findForm" method="post" name="findForm">
+                <div class="input-group">
+                    <span class="find-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="black" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                    </span>
+                    <input asp-for="Filter" class="form-control find-input" placeholder="Search matches by boardgame" />
+                    <select asp-for="MatchProgress" name="MatchProgress" class="selectpicker find-select" id="Progress">
+                        <option value="Upcoming"> Upcoming </option>
+                        <option value="Started"> Started </option>
+                    </select>
+                    <div>
+                        <button id="find-submit" type="submit" class="btn btn-secondary find-button">Find</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-3">
+            <div class="d-flex flex-column align-items-center justify-content-center">
+               <div class="basic-container p-4 mb-3">
+                    @if (await DateService.CheckUserScheduleAvailibilityAsync(DateTime.Now, Model.AppUserSchedule))
+                    {
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/accept.png" width="64" height="64" />
+                            <h6> You are available for play right now </h6>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                            <img src="~/img/decline.png" width="64" height="64" />
+                            <br />
+                            <h6> You are not available for play at the moment. </h6>
+                            <h6> Update your schedule to inform others about your availability status. </h6>
+                        </div>
+                    }
+               </div>
+               <div class="basic-container p-4 mb-3">
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <img src="~/img/chessboard.png" width="64" height="64" />
+                        <br />
+                        <h6> Click below to create new match </h6>
+                        <a asp-area="Identity" asp-page="CreateMatch" type="submit" class="w-100 btn btn-secondary"> Create new match </a>
+                    </div>
+               </div>
+                <div class="basic-container p-4 mb-3">
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
+                        <img src="~/img/ongoing.png" width="64" height="64" />
+                        <br />
+                        <h6> Click below to show upcoming / started user matches </h6>
+                        <a asp-area="Identity" asp-page="ShowUserMatches" asp-route-UserName="@Model.ApplicationUser.UserName" type="submit" class="w-100 btn btn-secondary"> Check your matches </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .basic-container
+    {
+        width: 100%;
+        background-color: white;
+        border: 2px solid black;
+        border-end-end-radius: 20px;
+    }
+</style>
