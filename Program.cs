@@ -94,6 +94,9 @@ builder.Services.AddScoped<IUserNotificationStore<UserNotification, ApplicationU
 builder.Services.AddScoped<IMatchStore<MatchModel, BoardgameModel, ApplicationUser>, MatchStore>();
 //builder.Services.AddScoped<MatchService>();
 
+// Add Custom UserRatingService to handle all methods realted to checking user progression in boardgames
+builder.Services.AddScoped<IUserRatingStore<UserRating, ApplicationUser, BoardgameModel>, UserRatingStore>();
+
 // Add Custom UserScheduleService to handle all methods related to handling user schedule in application
 builder.Services.AddScoped<IUserScheduleStore<UserSchedule, ApplicationUser>, UserScheduleStore>();
 //builder.Services.AddScoped<UserScheduleService>();

@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Data.Models.Entities;
+using BoardGameBrawl.Data.Stores.Interfaces;
+using System.Runtime.CompilerServices;
+using Microsoft.Identity.Client;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.User.Manage
 {
@@ -17,14 +20,41 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.User.Manage
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
+        private readonly IUserScheduleStore<UserSchedule, ApplicationUser> _userScheduleStore;
+        private readonly IUserNotificationStore<UserNotification, ApplicationUser> _userNotificationStore;
+        private readonly IUserRatingStore<UserRating, ApplicationUser, BoardgameModel> _userRatingStore;
+        private readonly IUserFriendStore<UserFriend, ApplicationUser> _userFriendStore;
+        private readonly IUserGeolocationStore<UserGeolocation, ApplicationUser> _userGeolocationStore;
+        private readonly IMessageStore<MessageModel, ApplicationUser> _messageStore;
+        private readonly IMatchStore<MatchModel, BoardgameModel, ApplicationUser> _matchStore;
+        private readonly IGroupParticipantStore<GroupParticipant, GroupModel, ApplicationUser> _groupParticipantStore;
+
+
         public DeletePersonalDataModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+
+            IUserScheduleStore<UserSchedule, ApplicationUser> userScheduleStore,
+            IUserNotificationStore<UserNotification, ApplicationUser> userNotificationStore,
+            IUserRatingStore<UserRating, ApplicationUser, BoardgameModel> userRatingStore,
+            IUserFriendStore<UserFriend, ApplicationUser> userFriendStore,
+            IUserGeolocationStore<UserGeolocation, ApplicationUser> userGeolocationStore,
+            IMessageStore<MessageModel, ApplicationUser> messageStore,
+            IMatchStore<MatchModel, BoardgameModel, ApplicationUser> matchStore,
+            IGroupParticipantStore<GroupParticipant, GroupModel, ApplicationUser> groupParticipantStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _userScheduleStore = userScheduleStore;
+            _userNotificationStore = userNotificationStore;
+            _userRatingStore = userRatingStore;
+            _userFriendStore = userFriendStore;
+            _userGeolocationStore = userGeolocationStore;
+            _messageStore = messageStore;
+            _matchStore = matchStore;
+            _groupParticipantStore = groupParticipantStore;
         }
 
         [BindProperty]
@@ -70,10 +100,6 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.User.Manage
                     return Page();
                 }
             }
-
-            // deleting user account and all entities in database realted to that user
-
-
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);

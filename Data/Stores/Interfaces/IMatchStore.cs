@@ -17,6 +17,8 @@ namespace BoardGameBrawl.Data.Stores.Interfaces
 
         Task<TMatch> FindMatchByIdAsync(string matchId, CancellationToken cancellationToken = default);
 
+        Task<TMatch> FindAllMatchesByHostId(string hostId, CancellationToken cancellationToken = default);
+
         //
         // DTO related methods
         //
