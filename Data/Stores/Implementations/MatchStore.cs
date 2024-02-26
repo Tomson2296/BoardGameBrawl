@@ -92,6 +92,17 @@ namespace BoardGameBrawl.Data.Stores.Implementations
             return await _context.Matches.AsNoTracking().SingleOrDefaultAsync(m => m.Id.Equals(matchId), cancellationToken);
         }
 
+        public async Task<IEnumerable<MatchModel>> FindAllMatchesByHostId(string hostId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentException.ThrowIfNullOrEmpty(hostId);
+
+            return await _context.Matches
+                .AsNoTracking()
+                .Where(m => m.MatchHostId == hostId)
+                .ToListAsync();
+        }
+
         //
         // setters methods
         //

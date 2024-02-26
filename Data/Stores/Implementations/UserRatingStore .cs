@@ -1,5 +1,4 @@
-﻿using AspNetCore;
-using BoardGameBrawl.Data.Models.API_XML;
+﻿using BoardGameBrawl.Data.Models.API_XML;
 using BoardGameBrawl.Data.Models.Entities;
 using BoardGameBrawl.Data.Stores.Interfaces;
 using Microsoft.AspNetCore.Identity;
